@@ -1,0 +1,107 @@
+## 快速幂
+简介：利用指数运算性质快速计算大指数幂计算
+题目：*[高低位交换](https://www.luogu.com.cn/problem/P1100)*
+
+1. 运算结果能够在long long表示范围内
+ 
+
+```cpp
+long long fastPower(long long base,int exp)
+{
+	long long res=1;
+	while(exp>0){
+		if(exp&1){
+			res*=base;
+		}
+		// 底数平方，指数砍半
+		base*=base
+		exp/=2;
+	}
+	return res;
+}
+```
+
+   
+
+ 2. 运算结果超出long long表示的范围，此时加上一个高精度乘法和高精度加法即可。
+ 
+ **有关高精度运算的原理可参考这个up主的视频[高精度运算原理](https://www.bilibili.com/video/BV1Ne411v78Z/?spm_id_from=333.337.search-card.all.click)，其实本质就是我们小学时学过的加法和乘法原理，此外还有高精度减法、除法以及阶乘的实现都是类似的。**
+
+```cpp
+// 高精度加法
+#incldue<string>
+string ADD(string a,string b)
+{
+	string res;
+	// 始终保持a较长
+	if(a.length()<b.length()){
+		string tmp=a;
+		a=b;
+		b=tmp;
+	}
+	// 补足b缺少的0，使得a和b一样长
+	int len1=a.length(),len2=b.length();
+	for(int i=0;i<len1-len2;++i){
+		b='0'+b;
+	}
+	int num,up=0;
+	for(int i=len1-1;i>=0;--i){
+		num=a[i]-'0'+b[i]-'0'+up;
+		up=num/10;
+		num%=10;
+		res=char(num+'0')+res;
+	}
+	// 别忘了看最高位有无进位
+	if(up){
+		res=char(up+'0')+res;
+	}
+	return res;
+}
+```
+
+```cpp
+#include<string>
+string MUL(string a,string b)
+{
+	string res;
+	int len1=a.length(),len2=b.length();
+	for(int i=len1-1;i>=0;--i){
+		string temp;
+		int num,up=0;	// 本位与进位
+		for(int j=len2-1;j>=0;--j){
+			num=(a[i]-'0')*(b[j]-'0')+up;
+			up=num/10;
+			num%=10;
+			temp=char(num+'0')+temp;
+		}
+		// 最后还要检查是否有进位
+		if(up){
+			temp=char(up+'0')+temp;
+			up=0;		// 别忘了归零
+		}
+		// 根据i补足0
+		for(int k=0;k<len-1-i;k++){
+			temp+='0';
+		}
+		res=ADD(res,temp);
+	}
+	return res;
+}
+```
+
+```cpp
+string fastPower(string base,int exp)
+{
+	string res="1";
+	while(exp>0){
+		if(exp&1){
+			res=MUL(res,base);
+		}
+		base=MUL(base,base);
+		exp/=2;
+	}
+	return string;
+}
+```
+
+  
