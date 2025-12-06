@@ -252,6 +252,20 @@ queue.back();
 size_t len=queue.size();
 ```
 
+ 5. 栈
+
+```cpp
+#include<stack>
+// 创建栈
+stack<元素类型>s;
+// 入栈
+s.push(10)
+// 出栈
+s.pop();
+// 访问栈顶
+s.top();
+```
+
 ## 其他
 
  1. double无穷
