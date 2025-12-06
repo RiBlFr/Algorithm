@@ -1,0 +1,271 @@
+## 数据处理
+*double*
+ 1. 保留小数
+
+```cpp
+#include<iomanip>
+cout<<fixed<<setpricision(n)<<num;
+```
+
+ 2. 科学计数法
+ 
+
+```cpp
+#include<iomanip>
+cout<<scientific<<num;
+```
+
+ 3. 保留有效数字
+ 
+
+```cpp
+cout<<setpricision(n)<<num;
+```
+
+ 4. 向上取整（天花板）
+ 
+
+```cpp
+#include<math.h>
+ceil(num);
+```
+
+ 5. 向下取整（别名高斯函数，其实就是地板hh）
+
+```cpp
+#include<cmath>
+floor(num);
+```
+
+ 
+*char* 
+ 1. 字符类型判断（digit,upper,lower)
+ 
+
+```cpp
+#include<cctype)//返回bool
+isupper(char);
+islower(char);
+isdigit(char);
+```
+
+ *类型转换 (long long=int)*
+ 
+ 1. int->string
+ 
+
+```cpp
+#include<string>
+to_string(num);
+```
+
+ 2. double->string
+ 
+
+```cpp
+to_string(num);
+// 但是会自动保留六位小数，且不能用科学计数法表示
+```
+
+```cpp
+#include<sstream>
+stringstream ss;
+ss<<fixed<<setprecision(n)<<num;
+string res=ss.str();
+// 使用流更灵活，也可自行设置科学计数法
+```
+
+ 3. string->int
+ 
+
+```cpp
+stringstream ss(s);
+int res;
+ss>>res;
+```
+
+ 4. stirng->double
+ 
+
+```cpp
+stringstream ss(s);
+double res;
+ss>>res;
+```
+
+ 
+ *数组*
+ 
+ 1. 排序
+
+```cpp
+#include<algorithm>
+sort(首地址,尾地址,函数(默认为升序排列));
+```
+
+ 2. 填充
+ 
+
+```cpp
+#include<algorithm>
+fill(首地址,尾地址,值);
+```
+
+ 3. 拷贝
+
+```cpp
+#include<cstring>
+memcpy(目标容器,原容器,内存大小);
+如：memcpy(vec1,vec2,sizeof(int)*拷贝长度)
+```
+
+ 4. 删除片段
+
+```cpp
+#include<vector>
+vec1.erase(片段首地址，片段尾地址);
+// 只需看尾地址-首地址是否为数组长度即可
+```
+ 5. 拼接片段
+
+```cpp
+#include<vector>
+vec1.insert(vec1插入位置的地址,vec2首地址,vec2尾地址)；
+```
+
+*string*
+
+ 1. 字符串分割（单分隔符）
+
+```cpp
+#include<sstream>
+#include<string>
+stringstream ss(s);
+vector<string>tokens;
+string temp;
+while(getline(ss,temp,分隔符)){
+	tokens.emplace_back(temp);
+}
+```
+
+ 2. 字符串分割（多分隔符）
+
+```cpp
+#include<string>
+string delimeters=", ./";
+int start=0,end;
+vector<string>tokens;
+while(1){
+	end=s.find_first_of(delimeters,start);
+	string token=s.substr(start,end-start);
+	if(!token.empty()){
+	tokens.push_back(token);
+	}
+	if(end==string::npos)break;
+	start=end+1;
+}
+```
+
+ 3. 提取子串
+
+```cpp
+#include<string>
+string s1=s.substr(start,length);
+```
+
+ 4. 定位子串
+
+```cpp
+#include<string>
+int idx=s.find(str);
+// 返回第一次出现位置首字母的索引或-1
+```
+
+## 数据类型
+ 1. vector
+ 
+
+```cpp
+#include<vector>
+// 创建数组（可嵌套）
+vector<数据类型>变量名(长度,统一值);
+vector<数据类型>变量名(长度);
+vector<数据类型>变量名{所有值};
+// 增删
+vec.pop_back();	// 删除末尾元素
+vec.push_back(x);	// 末尾增添x
+vec.emplace_back(x);	// 末尾增x，效率更高
+// 获取长度
+size_t len=vec.size(); 
+// 访问首尾元素
+vec.front();
+vec.back();
+```
+
+ 2. tuple（个人感觉大多数情况都可以用结构体替代元组）
+
+```cpp
+#include<tuple>
+// 创建元组
+tuple<数据类型,数据类型,数据类型...>元组名(对应类型的值1，值2....);
+// 访问/修改元素
+get<idx>(tp)=1;
+// 解包元组
+int a,b;
+string c;	// 提前创建对应类型的变量
+tie(a,b,c)=tp;
+// 拼接元组
+auto t3=tuple_cat(t1,t2);
+```
+
+ 3. unordered_map/map
+
+```cpp
+#include<map>
+#include<unordered_map>
+// 二者用法相同,map会升序排序(可加greater<int>实现降序排序)
+// 创建字典
+map<键类型,值类型>字典名{{键1:值1},{键2:值2}.....};
+// 遍历字典
+for(auto it=map.begin();it！=map.end();++it){
+	int key=it->first,value=it->second;
+}
+// 查找键值
+auto it=map.find(键名);
+// 返回对应地址/map.end();注意和string.find(str)不同，返回的是索引/-1；
+```
+
+ 4. queue(队列函数，BFS时用到)
+
+```cpp
+#include<queue>
+// 创建队列
+queue<元素类型>队列名;
+// 末尾增
+queue.push(x);
+// 开头删
+queue.pop();
+// 访问首尾元素
+queue.front();
+queue.back();
+// 获取队列长度
+size_t len=queue.size();
+```
+
+## 其他
+
+ 1. double无穷
+ 
+
+```cpp
+#include<cmath>
+double Max=INFINITY,Min=-INFINITY;
+```
+  
+
+ 2. int无穷
+
+```cpp
+#include<climits>
+int Max=INT_MAX,Min=INT_MIN;
+```
