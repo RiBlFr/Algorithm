@@ -1,3 +1,6 @@
+如果想要更好的视觉效果，可前往CSDN查看：
+https://blog.csdn.net/2402_89530985/article/details/155161798?sharetype=blogdetail&sharerId=155161798&sharerefer=PC&sharesource=2402_89530985&spm=1011.2480.3001.8118
+
 ## 数据处理
 *double*
  1. 保留小数
@@ -266,20 +269,65 @@ s.pop();
 s.top();
 ```
 
+ 6. 联合体
+
+```cpp
+union data	// 可匿名
+{
+	int a;		// 4字节
+	double b;	// 8字节
+	char s[7];	// 7字节
+}e;
+
+// 联合体内存对齐：所有变量的起始地址相同，某些情况下可以用来节省内存
+cout << sizeof(e) << endl;	// 8 字节
+e.s[0] = 255;				// 11111111	一个字节
+e.s[1] = 1;					// 00000001	一个字节
+e.s[2] = 0;					// 00000000 一个字节
+e.s[3] = 0;					// 00000000	一个字节
+cout << e.a << endl;		// 00000000 00000000 00000001 11111111	四个字节	
+// 注：数组的顺序按写的顺序排（下标小的在低地址）
+```
+
 ## 其他
 
- 1. double无穷
- 
+ 1. 无穷的表示
 
 ```cpp
 #include<cmath>
 double Max=INFINITY,Min=-INFINITY;
+#include<climit>
+int Max=INT_MAX,MIN=INT_MIN;
 ```
-  
 
- 2. int无穷
-
+ 2. 构造函数
+ 
+ 构造函数是 C++ 中在创建对象时自动执行的初始化函数，没有返回值、名字与类相同，用来让对象从“未初始化”变成“可使用”状态。
+ 
 ```cpp
-#include<climits>
-int Max=INT_MAX,Min=INT_MIN;
+union Info
+{
+	char name[20];
+	int role;
+	union
+	{
+		int score;
+		char course[20];
+	}SC;
+
+	Info(const char _name[20], int _role, int _score, const char _course[20])
+	{
+		memcpy(name, _name, sizeof(char) * 20);
+		role = _role;
+		if (_score > 0)SC.score = _score;
+		else memcpy(SC.course,_course,sizeof(char)*20);
+	}
+};
 ```
+构造函数与普通函数的区别：
+|      | 普通函数    | 构造函数      |
+| ---- | ------- | --------- |
+| 名字   | 任意      | 必须与类名相同   |
+| 返回值  | 有或 void | 不能有返回值    |
+| 调用方式 | 手动调用    | 创建对象时自动调用 |
+| 目的   | 执行某个操作  | 初始化对象     |
